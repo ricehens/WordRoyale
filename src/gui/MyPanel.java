@@ -61,18 +61,16 @@ public class MyPanel extends JPanel {
     private void implementMouseListeners() {
         addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-            }
+            public void mouseClicked(MouseEvent mouseEvent) {}
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
                 sel = new Selection(grid, (mouseEvent.getX() - 50) / cellSize, (mouseEvent.getY() - 65) / cellSize);
-                System.out.println(sel.word());
             }
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-
+                System.out.println(sel.word());
             }
 
             @Override
@@ -84,7 +82,7 @@ public class MyPanel extends JPanel {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
-
+                sel.add((mouseEvent.getX() - 50) / cellSize, (mouseEvent.getY() - 65) / cellSize);
             }
 
             @Override
