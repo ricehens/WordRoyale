@@ -61,8 +61,8 @@ public class LetterGrid {
         }
     }
 
-    public char[][] getBoard() {
-        return board;
+    public char get(int x, int y) {
+        return board[x][y];
     }
 
     // tester

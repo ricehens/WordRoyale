@@ -49,14 +49,13 @@ public class MyPanel extends JPanel {
         g2D.setPaint(Color.BLUE);
         // g2D.fillPolygon(xPoints, yPoints, 3);
 
-        g2D.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 50));
-        g2D.drawString("Word Royale", 100, 50);
+        // g2D.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 50));
+        // g2D.drawString("Word Royale", 100, 50);
         
         drawLetterGrid(g2D);
     }
 
     public void drawLetterGrid(Graphics2D g2D) {
-        char[][] board = grid.getBoard();
         int cellSize = 400 / gridSize;
         g2D.setFont(new Font(Font.MONOSPACED, Font.PLAIN, cellSize / 2));
         for (int i = 0; i < gridSize; i++) {
@@ -64,7 +63,7 @@ public class MyPanel extends JPanel {
                 int xStart = i * cellSize + (500 - cellSize * gridSize) / 2;
                 int yStart = j * cellSize + (500 - cellSize * gridSize) / 2 + 15;
                 g2D.drawRect(xStart, yStart, cellSize, cellSize);
-                g2D.drawString("" + board[i][j], xStart + cellSize * 3/8, yStart + cellSize * 11/16);
+                g2D.drawString("" + grid.get(i, j), xStart + cellSize * 3/8, yStart + cellSize * 11/16);
             }
         }
     }
