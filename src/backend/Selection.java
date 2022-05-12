@@ -38,7 +38,7 @@ public class Selection {
         if (isUndo(x, y)) {
             row.pop();
             col.pop();
-            sb.deleteCharAt(getSize() - 1);
+            sb.deleteCharAt(getSize());
         } else {
             row.push(x);
             col.push(y);
