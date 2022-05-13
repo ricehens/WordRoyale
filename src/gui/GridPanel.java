@@ -8,30 +8,30 @@ import java.awt.event.MouseMotionListener;
 // import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import backend.Controller;
 import backend.LetterGrid;
 import backend.Selection;
 
-public class MyPanel extends JPanel {
+public class GridPanel extends JPanel {
 
     private int gridSize;
     private int cellSize;
-    private LetterGrid grid;
+    private Controller game;
     private Selection sel;
-    
-    public MyPanel() {
-        this(4);
-    }
 
-    public MyPanel(int gridSize) {
-        this.setPreferredSize(new Dimension(500, 500));
-        this.gridSize = gridSize;
+    private ScoreboardPanel score; // TODO better design
+    public void initScoreboard(ScoreboardPanel score) { this.score = score; }
+    
+    public GridPanel(Controller game) {
+        this.game = game;
+        gridSize = game.getGrid().size();
         cellSize = 400 / gridSize;
-        grid = new LetterGrid(gridSize);
+        this.setPreferredSize(new Dimension(500, 500));
 
         implementMouseListeners();
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         Graphics2D g2D = (Graphics2D) g;
 
         g2D.setPaint(Color.BLUE);
@@ -49,7 +49,7 @@ public class MyPanel extends JPanel {
                 int xStart = i * cellSize + (500 - cellSize * gridSize) / 2;
                 int yStart = j * cellSize + (500 - cellSize * gridSize) / 2 + 15;
                 g2D.drawRect(xStart, yStart, cellSize, cellSize);
-                g2D.drawString("" + grid.get(i, j), xStart + cellSize * 3/8, yStart + cellSize * 11/16);
+                g2D.drawString("" + game.getGrid().get(i, j), xStart + cellSize * 3/8, yStart + cellSize * 11/16);
             }
         }
     }
@@ -65,12 +65,14 @@ public class MyPanel extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                sel = new Selection(grid, (mouseEvent.getX() - 50) / cellSize, (mouseEvent.getY() - 65) / cellSize);
+                sel = new Selection(game.getGrid(), (mouseEvent.getX() - 50) / cellSize, (mouseEvent.getY() - 65) / cellSize);
             }
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                System.out.println(sel.word());
+                game.record(sel);
+System.out.println(game.getScore() + " " + sel.word());
+                if (score != null) score.repaint();
             }
 
             @Override

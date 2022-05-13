@@ -65,6 +65,10 @@ public class LetterGrid {
         return board[x][y];
     }
 
+    public int size() {
+        return dim;
+    }
+
     // tester
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {

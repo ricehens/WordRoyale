@@ -34,7 +34,7 @@ public class Selection {
      * @return true if successful
      */
     public boolean add(int x, int y) {
-        if (!isAdj(x, y)) return false;
+        if (!isValid(x, y) || !isAdj(x, y)) return false;
         if (isUndo(x, y)) {
             row.pop();
             col.pop();
@@ -53,6 +53,10 @@ public class Selection {
 
     public int getSize() {
         return row.size();
+    }
+
+    private boolean isValid(int x, int y) {
+        return x >= 0 && y >= 0 && x < grid.size() && y < grid.size();
     }
 
     private boolean isAdj(int x, int y) {

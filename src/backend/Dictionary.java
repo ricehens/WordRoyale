@@ -14,7 +14,7 @@ public class Dictionary {
     public Dictionary() {
         words = new TreeSet<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("scrabble.txt")))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(new File("src/backend/scrabble.txt")))) {
             String line;
             while ((line = br.readLine()) != null)
                 if (line.length() >= 3)
