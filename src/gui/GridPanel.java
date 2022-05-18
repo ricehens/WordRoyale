@@ -65,7 +65,14 @@ public class GridPanel extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                sel = new Selection(game.getGrid(), (mouseEvent.getX() - 50) / cellSize, (mouseEvent.getY() - 65) / cellSize);
+                int x = (mouseEvent.getX() - 50) / cellSize;
+                int y = (mouseEvent.getY() - 65) / cellSize;
+                /*
+                int dx = Math.abs(mouseEvent.getX() - (x * cellSize + (500 - cellSize * gridSize) / 2 + cellSize / 2));
+                int dy = Math.abs(mouseEvent.getY() - (y * cellSize + (500 - cellSize * gridSize) / 2 + cellSize / 2 + 15));
+                if (4 * dx <= cellSize || 4 * dy <= cellSize)
+                 */
+                    sel = new Selection(game.getGrid(), x, y);
             }
 
             @Override
@@ -84,7 +91,12 @@ System.out.println(game.getScore() + " " + sel.word());
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
-                sel.add((mouseEvent.getX() - 50) / cellSize, (mouseEvent.getY() - 65) / cellSize);
+                int x = (mouseEvent.getX() - 50) / cellSize;
+                int y = (mouseEvent.getY() - 65) / cellSize;
+                int dx = Math.abs(mouseEvent.getX() - (x * cellSize + (500 - cellSize * gridSize) / 2 + cellSize / 2));
+                int dy = Math.abs(mouseEvent.getY() - (y * cellSize + (500 - cellSize * gridSize) / 2 + cellSize / 2 + 15));
+                if (4 * dx <= cellSize || 4 * dy <= cellSize)
+                    sel.add(x, y);
             }
 
             @Override
