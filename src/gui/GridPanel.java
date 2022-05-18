@@ -32,6 +32,8 @@ public class GridPanel extends JPanel {
     }
 
     public void paintComponent(Graphics g) {
+        super.paintComponent(g); // clear
+
         Graphics2D g2D = (Graphics2D) g;
 
         g2D.setPaint(Color.BLUE);
@@ -43,12 +45,14 @@ public class GridPanel extends JPanel {
     }
 
     public void drawLetterGrid(Graphics2D g2D) {
+        int eps = 10;
         g2D.setFont(new Font(Font.MONOSPACED, Font.PLAIN, cellSize / 2));
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 int xStart = i * cellSize + (500 - cellSize * gridSize) / 2;
                 int yStart = j * cellSize + (500 - cellSize * gridSize) / 2 + 15;
-                g2D.drawRect(xStart, yStart, cellSize, cellSize);
+                g2D.setPaint(sel != null && sel.marked(i, j) ? Color.GREEN : Color.BLUE);
+                g2D.drawRect(xStart + eps, yStart + eps, cellSize - 2 * eps, cellSize - 2 * eps);
                 g2D.drawString("" + game.getGrid().get(i, j), xStart + cellSize * 3/8, yStart + cellSize * 11/16);
             }
         }
@@ -72,7 +76,8 @@ public class GridPanel extends JPanel {
                 int dy = Math.abs(mouseEvent.getY() - (y * cellSize + (500 - cellSize * gridSize) / 2 + cellSize / 2 + 15));
                 if (4 * dx <= cellSize || 4 * dy <= cellSize)
                  */
-                    sel = new Selection(game.getGrid(), x, y);
+                sel = new Selection(game.getGrid(), x, y);
+                repaint();
             }
 
             @Override
@@ -80,6 +85,8 @@ public class GridPanel extends JPanel {
                 game.record(sel);
 System.out.println(game.getScore() + " " + sel.word());
                 if (score != null) score.repaint();
+                sel = null;
+                repaint();
             }
 
             @Override
@@ -97,6 +104,7 @@ System.out.println(game.getScore() + " " + sel.word());
                 int dy = Math.abs(mouseEvent.getY() - (y * cellSize + (500 - cellSize * gridSize) / 2 + cellSize / 2 + 15));
                 if (4 * dx <= cellSize || 4 * dy <= cellSize)
                     sel.add(x, y);
+                repaint();
             }
 
             @Override

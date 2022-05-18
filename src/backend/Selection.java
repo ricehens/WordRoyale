@@ -8,6 +8,7 @@ public class Selection {
     private Stack<Integer> row;
     private Stack<Integer> col;
     private StringBuilder sb;
+    private boolean[][] marked;
 
     private final int[] dx = new int[] {1, 1, 0, -1, -1, -1, 0, 1};
     private final int[] dy = new int[] {0, 1, 1, 1, 0, -1, -1, -1};
@@ -25,6 +26,8 @@ public class Selection {
         row.push(x);
         col.push(y);
         sb = new StringBuilder("" + grid.get(x, y));
+        marked = new boolean[grid.size()][grid.size()];
+        marked[x][y] = true;
     }
 
     /**
@@ -36,15 +39,19 @@ public class Selection {
     public boolean add(int x, int y) {
         if (!isValid(x, y) || !isAdj(x, y)) return false;
         if (isUndo(x, y)) {
-            row.pop();
-            col.pop();
             sb.deleteCharAt(getSize());
+            marked[row.pop()][col.pop()] = false;
         } else {
             row.push(x);
             col.push(y);
             sb.append(grid.get(x, y));
+            marked[x][y] = true;
         }
         return true;
+    }
+
+    public boolean marked(int x, int y) {
+        return marked[x][y];
     }
 
     public String word() {
