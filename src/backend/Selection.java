@@ -51,7 +51,7 @@ public class Selection {
     }
 
     public boolean marked(int x, int y) {
-        return marked[x][y];
+        return isValid(x, y) && marked[x][y];
     }
 
     public String word() {

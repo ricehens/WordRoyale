@@ -1,5 +1,6 @@
 package backend;
 
+import java.awt.*;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -36,6 +37,16 @@ public class Controller {
                 return true;
             }
         return false;
+    }
+
+    public Color color(Selection sel) {
+        if (sel == null)
+            return Color.GRAY;
+        if (words.contains(sel.word()))
+            return Color.YELLOW;
+        if (dict.isWord(sel.word()))
+            return Color.GREEN;
+        return Color.GRAY;
     }
 
     public LetterGrid getGrid() {

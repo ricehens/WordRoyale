@@ -46,12 +46,13 @@ public class GridPanel extends JPanel {
 
     public void drawLetterGrid(Graphics2D g2D) {
         int eps = 10;
+        Color alt = game.color(sel);
         g2D.setFont(new Font(Font.MONOSPACED, Font.PLAIN, cellSize / 2));
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 int xStart = i * cellSize + (500 - cellSize * gridSize) / 2;
                 int yStart = j * cellSize + (500 - cellSize * gridSize) / 2 + 15;
-                g2D.setPaint(sel != null && sel.marked(i, j) ? Color.GREEN : Color.BLUE);
+                g2D.setPaint(sel != null && sel.marked(i, j) ? alt : Color.BLUE);
                 g2D.drawRect(xStart + eps, yStart + eps, cellSize - 2 * eps, cellSize - 2 * eps);
                 g2D.drawString("" + game.getGrid().get(i, j), xStart + cellSize * 3/8, yStart + cellSize * 11/16);
             }
