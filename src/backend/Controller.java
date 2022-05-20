@@ -13,6 +13,8 @@ public class Controller {
     private int cnt;
     private int score;
 
+    private long start;
+
     public Controller(Dictionary dict, int gridSize) {
         this(dict, new LetterGrid(gridSize));
     }
@@ -21,6 +23,8 @@ public class Controller {
         this.dict = dict;
         this.grid = grid;
         words = new TreeSet<>();
+
+        start = System.currentTimeMillis();
     }
 
     /**
@@ -29,6 +33,7 @@ public class Controller {
      * @return true if word is valid and new
      */
     public boolean record(Selection sel) {
+        if (timeLeft() <= 0) return false;
         String word = sel.word();
         if (dict.isWord(word))
             if (words.add(word)) {
@@ -40,7 +45,7 @@ public class Controller {
     }
 
     public Color color(Selection sel) {
-        if (sel == null)
+        if (timeLeft() <= 0 || sel == null)
             return Color.GRAY;
         if (words.contains(sel.word()))
             return Color.YELLOW;
@@ -59,6 +64,10 @@ public class Controller {
 
     public int getScore() {
         return score;
+    }
+
+    public double timeLeft() {
+        return Math.max(0.0, 10.0 - .001 * (System.currentTimeMillis() - start));
     }
 
     private int score(int wordLen) {
