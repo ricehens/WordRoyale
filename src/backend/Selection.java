@@ -39,13 +39,15 @@ public class Selection {
     public boolean add(int x, int y) {
         if (!isValid(x, y) || !isAdj(x, y)) return false;
         if (isUndo(x, y)) {
-            sb.deleteCharAt(getSize());
             marked[row.pop()][col.pop()] = false;
+            sb.deleteCharAt(getSize());
         } else {
-            row.push(x);
-            col.push(y);
-            sb.append(grid.get(x, y));
-            marked[x][y] = true;
+            if (!marked[x][y]) {
+                row.push(x);
+                col.push(y);
+                sb.append(grid.get(x, y));
+                marked[x][y] = true;
+            }
         }
         return true;
     }
