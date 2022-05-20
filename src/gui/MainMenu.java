@@ -63,7 +63,7 @@ public class MainMenu extends JFrame {
         singlePlayer.setPreferredSize(new Dimension(100, 100));
         singlePlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new SinglePlayerFrame(dict, 8, ((Long) timeLimit.getValue()).intValue());
+                new SinglePlayerFrame(dict, ((Number) gridSize.getValue()).intValue(), ((Number) timeLimit.getValue()).intValue());
                 bye();
             }
         });
