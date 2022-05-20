@@ -5,20 +5,21 @@ import backend.Dictionary;
 
 import javax.swing.*;
 
-public class MyFrame extends JFrame {
+public class SinglePlayerFrame extends JFrame {
     Controller game;
     GridPanel panel;
     ScoreboardPanel score;
 
-    public MyFrame(Dictionary dict) {
-        this(dict, 4);
+    public SinglePlayerFrame(Dictionary dict) {
+        this(dict, 4, 60);
     }
 
-    public MyFrame(Dictionary dict, int gridSize) {
+    public SinglePlayerFrame(Dictionary dict, int gridSize, int time) {
+        super("Word Royale: Single Player");
         JPanel main = new JPanel();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
-        game = new Controller(dict, gridSize);
+        game = new Controller(dict, gridSize, time);
         score = new ScoreboardPanel(game);
         panel = new GridPanel(game);
         panel.initScoreboard(score);
@@ -30,5 +31,10 @@ public class MyFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        Dictionary dict = new Dictionary();
+        new SinglePlayerFrame(dict, 8, 120);
     }
 }

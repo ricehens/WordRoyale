@@ -13,15 +13,18 @@ public class Controller {
     private int cnt;
     private int score;
 
+    private int time = 60;
+
     private long start;
 
-    public Controller(Dictionary dict, int gridSize) {
-        this(dict, new LetterGrid(gridSize));
+    public Controller(Dictionary dict, int gridSize, int time) {
+        this(dict, new LetterGrid(gridSize), time);
     }
 
-    public Controller(Dictionary dict, LetterGrid grid) {
+    public Controller(Dictionary dict, LetterGrid grid, int time) {
         this.dict = dict;
         this.grid = grid;
+        this.time = time;
         words = new TreeSet<>();
 
         start = System.currentTimeMillis();
@@ -67,7 +70,7 @@ public class Controller {
     }
 
     public double timeLeft() {
-        return Math.max(0.0, 10.0 - .001 * (System.currentTimeMillis() - start));
+        return Math.max(0.0, time - .001 * (System.currentTimeMillis() - start));
     }
 
     private int score(int wordLen) {

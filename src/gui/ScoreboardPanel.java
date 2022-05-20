@@ -27,7 +27,6 @@ public class ScoreboardPanel extends JPanel {
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {}
-                    System.out.println(game.timeLeft());
                 }
             }
         };

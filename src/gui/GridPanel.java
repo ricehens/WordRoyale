@@ -99,6 +99,7 @@ System.out.println(game.getScore() + " " + sel.word());
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent mouseEvent) {
+                if (sel == null) return;
                 int x = (mouseEvent.getX() - 50) / cellSize;
                 int y = (mouseEvent.getY() - 65) / cellSize;
                 int dx = Math.abs(mouseEvent.getX() - (x * cellSize + (500 - cellSize * gridSize) / 2 + cellSize / 2));
