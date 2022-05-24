@@ -1,20 +1,18 @@
 package backend;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class Dictionary {
 
     private Set<String> words;
+    private static final String PATH = "../backend/scrabble.txt";
 
     public Dictionary() {
         words = new TreeSet<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(new File("src/backend/scrabble.txt")))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict.txt")))) {
             String line;
             while ((line = br.readLine()) != null)
                 if (line.length() >= 3)
