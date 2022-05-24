@@ -1,34 +1,52 @@
 package net;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import backend.Controller;
+
+import java.io.*;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Client extends Thread {
 
+    private Controller game;
+
     private String serverAddress;
     private int port;
+    private Queue<String> mailbox;
 
-    public Client(String serverAddress, int port) {
+    public Client(Controller game, String serverAddress, int port) {
+        this.game = game;
         this.serverAddress = serverAddress;
         this.port = port;
+        mailbox = new LinkedList<>();
     }
 
-    public void run() {
-        while (true) {
-            try {
-                System.out.println("Connecting");
-                Socket server = new Socket(serverAddress, port);
+    @Override public void run() {
+        try (Socket server = new Socket(serverAddress, port);
+             DataInputStream in = new DataInputStream(new BufferedInputStream(server.getInputStream()));
+             DataOutputStream out = new DataOutputStream(server.getOutputStream()))
+        {
+            new Thread() {
+                @Override public void run() {
+                    String line;
+                    do {
+                        try {
+                            line = in.readUTF();
+                            System.out.println(line);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            break;
+                        }
+                    } while (!line.equals("EOF"));
+                }
+            }.start();
 
-                DataOutputStream out = new DataOutputStream(server.getOutputStream());
-                out.writeUTF("");
-                DataInputStream in = new DataInputStream(server.getInputStream());
-                in.readUTF();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            for (String msg : mailbox)
+                out.writeUTF(msg);
+            // out.writeUTF("EOF");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

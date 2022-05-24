@@ -9,27 +9,27 @@ import java.util.TreeSet;
 // TODO connect to network
 public class Controller {
 
-    private Dictionary dict;
-    private LetterGrid grid;
-    private Map<String, WordEvent> words;
+    protected Dictionary dict;
+    protected LetterGrid grid;
+    protected Map<String, WordEvent> words;
 
-    private int numTeams;
-    private int[] cnt;
-    private int[] score;
+    protected int numTeams;
+    protected int[] cnt;
+    protected int[] score;
 
-    private int time;
-    private long start;
-    private int player;
+    protected int time;
+    protected long start;
+    protected int player;
 
     public Controller(Dictionary dict, int gridSize, int time) {
         this(dict, new LetterGrid(gridSize), time);
     }
 
     public Controller(Dictionary dict, LetterGrid grid, int time) {
-        this(dict, grid, time, 0, 1);
+        this(dict, grid, time, 0, 1, System.currentTimeMillis());
     }
 
-    public Controller(Dictionary dict, LetterGrid grid, int time, int player, int numTeams) {
+    public Controller(Dictionary dict, LetterGrid grid, int time, int player, int numTeams, long start) {
         this.dict = dict;
         this.grid = grid;
         this.time = time;
@@ -39,7 +39,7 @@ public class Controller {
         score = new int[numTeams];
         words = new TreeMap<>();
 
-        start = System.currentTimeMillis();
+        this.start = start;
     }
 
     /**

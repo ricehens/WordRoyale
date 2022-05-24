@@ -1,31 +1,27 @@
 package gui;
 
-import javax.swing.*;
-
 import backend.Dictionary;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 
-public class MainMenu extends JFrame {
+public class SinglePlayerMenu extends JFrame {
     private Dictionary dict;
     private JPanel panel;
 
-    /*
     private JFormattedTextField timeLimit;
     private JFormattedTextField gridSize;
-    */
 
-    public MainMenu(Dictionary dict) {
-        super("Word Royale");
+    public SinglePlayerMenu(Dictionary dict) {
+        super("Word Royale: Begin Game");
         this.dict = dict;
 
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        // addFields();
+        addFields();
         addButtons();
 
         add(panel);
@@ -35,7 +31,6 @@ public class MainMenu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    /*
     private void addFields() {
         JPanel fields = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -58,40 +53,19 @@ public class MainMenu extends JFrame {
 
         panel.add(fields);
     }
-    */
 
     private void addButtons() {
         JPanel buttons = new JPanel();
 
-        JButton singlePlayer = new JButton("Solo");
+        JButton singlePlayer = new JButton("Play");
         singlePlayer.setPreferredSize(new Dimension(100, 100));
         singlePlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new SinglePlayerMenu(dict);
+                new SinglePlayerFrame(dict, ((Number) gridSize.getValue()).intValue(), ((Number) timeLimit.getValue()).intValue());
                 bye();
             }
         });
         buttons.add(singlePlayer);
-
-        JButton host = new JButton("Host");
-        host.setPreferredSize(new Dimension(100, 100));
-        host.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new HostMenu(dict);
-                bye();
-            }
-        });
-        buttons.add(host);
-
-        JButton join = new JButton("Join");
-        join.setPreferredSize(new Dimension(100, 100));
-        join.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                new JoinMenu(dict);
-                bye();
-            }
-        });
-        buttons.add(join);
 
         panel.add(buttons);
     }
@@ -99,9 +73,5 @@ public class MainMenu extends JFrame {
     private void bye() {
         setVisible(false);
         dispose();
-    }
-
-    public static void main(String[] args) {
-        new MainMenu(new Dictionary());
     }
 }
