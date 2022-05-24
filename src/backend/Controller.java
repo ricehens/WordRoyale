@@ -2,26 +2,31 @@ package backend;
 
 import net.Client;
 
+import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.List;
 
-// TODO connect to network
 public class Controller {
 
-    protected Dictionary dict;
-    protected LetterGrid grid;
-    protected Map<String, WordEvent> words;
+    private Dictionary dict;
+    private LetterGrid grid;
+    private Map<String, WordEvent> words;
+    private Stack<String> queue;
 
-    protected int numTeams;
-    protected int[] cnt;
-    protected int[] score;
+    private int numTeams;
+    private int[] cnt;
+    private int[] score;
+    private int indivCnt;
+    private int indivScore;
 
-    protected int time;
-    protected long start;
-    protected int team;
+    private int time;
+    private long start;
+    private int team;
 
-    protected Client client;
+    private Client client;
+
+    private List<JPanel> updates;
 
     public Controller(Dictionary dict, int gridSize, int time, int team, int numTeams) {
         this(dict, new LetterGrid(gridSize), time, team, numTeams);
@@ -36,17 +41,28 @@ public class Controller {
         this.grid = grid;
         this.time = time;
         this.team = team;
+        this.numTeams = numTeams;
 
         cnt = new int[numTeams];
         score = new int[numTeams];
         words = new TreeMap<>();
-
+        /*
+        queue = new PriorityQueue<>((x, y) ->
+                ((words.containsKey(x) ? -Long.valueOf(words.get(x).getTime()).intValue() : -1)
+                        + (words.containsKey(y) ? Long.valueOf(words.get(y).getTime()).intValue() : -1)));
+         */
+        queue = new Stack<>();
+        updates = new ArrayList<>();
         this.start = start;
     }
 
     // terrible design
     public void linkClient(Client client) {
         this.client = client;
+    }
+
+    public void linkPanel(JPanel panel) {
+        updates.add(panel);
     }
 
     /**
@@ -58,11 +74,11 @@ public class Controller {
         if (timeLeft() <= 0) return false;
         String word = sel.word();
         if (dict.isWord(word))
-            return receive(word, team, System.currentTimeMillis() - start);
+            return receive(true, word, team, System.currentTimeMillis() - start);
         return false;
     }
 
-    public boolean receive(String word, int player, long time) {
+    public boolean receive(boolean self, String word, int player, long time) {
         WordEvent we = words.get(word);
         if (we != null && we.getTime() <= time)
             return false;
@@ -74,8 +90,14 @@ public class Controller {
         }
         cnt[player]++;
         score[player] += score(word.length());
+        if (self) {
+            indivCnt++;
+            indivScore += score(word.length());
+        }
         if (client != null && player == team)
             client.broadcast(we2);
+        queue.push(word);
+        for (JPanel p : updates) p.repaint();
         return true;
     }
 
@@ -94,7 +116,7 @@ public class Controller {
     }
 
     public int getCnt() {
-        return getCnt(team);
+        return indivCnt;
     }
 
     public int getCnt(int team) {
@@ -102,7 +124,7 @@ public class Controller {
     }
 
     public int getScore() {
-        return getScore(team);
+        return indivScore;
     }
 
     public int getScore(int team) {
@@ -113,12 +135,20 @@ public class Controller {
         return team;
     }
 
+    public int getNumTeams() {
+        return numTeams;
+    }
+
     public WordEvent getEvent(String word) {
         return words.get(word);
     }
 
     public double timeLeft() {
         return Math.max(0.0, time - .001 * (System.currentTimeMillis() - start));
+    }
+
+    public Stack<String> getStack() {
+        return queue;
     }
 
     private int score(int wordLen) {

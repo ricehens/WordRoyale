@@ -84,7 +84,7 @@ public class Client {
             if (potentialJw != null)
                 potentialJw.proceed();
         } else {
-            game.receive(split[1], Integer.parseInt(split[0]), Integer.parseInt(split[2]));
+            game.receive(false, split[1], Integer.parseInt(split[0]), Integer.parseInt(split[2]));
         }
     }
 

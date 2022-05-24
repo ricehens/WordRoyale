@@ -1,7 +1,6 @@
 package gui;
 
 import backend.Controller;
-import backend.Dictionary;
 import net.Client;
 
 import javax.swing.*;
@@ -10,6 +9,7 @@ public class MultiplayerFrame extends JFrame {
     Client client;
     Controller game;
     GridPanel panel;
+    MultiplayerDataPanel words;
     ScoreboardPanel score;
 
     public MultiplayerFrame(Client client) {
@@ -22,8 +22,10 @@ public class MultiplayerFrame extends JFrame {
         score = new ScoreboardPanel(game);
         panel = new GridPanel(game);
         panel.initScoreboard(score);
+        words = new MultiplayerDataPanel(game);
         main.add(score);
         main.add(panel);
+        main.add(words);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(main);
