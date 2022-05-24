@@ -1,7 +1,9 @@
 package backend;
 
 import java.awt.*;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 // TODO connect to network
@@ -9,23 +11,33 @@ public class Controller {
 
     private Dictionary dict;
     private LetterGrid grid;
-    private Set<String> words;
-    private int cnt;
-    private int score;
+    private Map<String, WordEvent> words;
 
-    private int time = 60;
+    private int numTeams;
+    private int[] cnt;
+    private int[] score;
 
+    private int time;
     private long start;
+    private int player;
 
     public Controller(Dictionary dict, int gridSize, int time) {
         this(dict, new LetterGrid(gridSize), time);
     }
 
     public Controller(Dictionary dict, LetterGrid grid, int time) {
+        this(dict, grid, time, 0, 1);
+    }
+
+    public Controller(Dictionary dict, LetterGrid grid, int time, int player, int numTeams) {
         this.dict = dict;
         this.grid = grid;
         this.time = time;
-        words = new TreeSet<>();
+        this.player = player;
+
+        cnt = new int[numTeams];
+        score = new int[numTeams];
+        words = new TreeMap<>();
 
         start = System.currentTimeMillis();
     }
@@ -36,21 +48,27 @@ public class Controller {
      * @return true if word is valid and new
      */
     public boolean record(Selection sel) {
+        return receive(sel, player, System.currentTimeMillis() - start);
+    }
+
+    public boolean receive(Selection sel, int player, long time) {
         if (timeLeft() <= 0) return false;
         String word = sel.word();
-        if (dict.isWord(word))
-            if (words.add(word)) {
-                cnt++;
-                score += score(word.length());
-                return true;
-            }
+        if (dict.isWord(word)) {
+            if (words.containsKey(word) && words.get(word).getTime() <= time)
+                return false;
+            words.put(word, new WordEvent(player, word, time));
+            cnt[player]++;
+            score[player] += score(word.length());
+            return true;
+        }
         return false;
     }
 
     public Color color(Selection sel) {
         if (timeLeft() <= 0 || sel == null)
             return Color.GRAY;
-        if (words.contains(sel.word()))
+        if (words.containsKey(sel.word()))
             return Color.YELLOW;
         if (dict.isWord(sel.word()))
             return Color.GREEN;
@@ -62,11 +80,19 @@ public class Controller {
     }
 
     public int getCnt() {
-        return cnt;
+        return getCnt(player);
+    }
+
+    public int getCnt(int player) {
+        return cnt[player];
     }
 
     public int getScore() {
-        return score;
+        return getScore(player);
+    }
+
+    public int getScore(int player) {
+        return score[player];
     }
 
     public double timeLeft() {

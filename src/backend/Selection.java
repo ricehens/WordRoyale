@@ -37,7 +37,7 @@ public class Selection {
      * @return true if successful
      */
     public boolean add(int x, int y) {
-        if (!isValid(x, y) || !isAdj(x, y)) return false;
+        if (!grid.isValid(x, y) || !isAdj(x, y)) return false;
         if (isUndo(x, y)) {
             marked[row.pop()][col.pop()] = false;
             sb.deleteCharAt(getSize());
@@ -53,7 +53,7 @@ public class Selection {
     }
 
     public boolean marked(int x, int y) {
-        return isValid(x, y) && marked[x][y];
+        return grid.isValid(x, y) && marked[x][y];
     }
 
     public String word() {
@@ -62,10 +62,6 @@ public class Selection {
 
     public int getSize() {
         return row.size();
-    }
-
-    private boolean isValid(int x, int y) {
-        return x >= 0 && y >= 0 && x < grid.size() && y < grid.size();
     }
 
     private boolean isAdj(int x, int y) {

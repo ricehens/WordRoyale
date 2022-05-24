@@ -77,7 +77,8 @@ public class GridPanel extends JPanel {
                 int dy = Math.abs(mouseEvent.getY() - (y * cellSize + (500 - cellSize * gridSize) / 2 + cellSize / 2 + 15));
                 if (4 * dx <= cellSize || 4 * dy <= cellSize)
                  */
-                sel = new Selection(game.getGrid(), x, y);
+                if (game.getGrid().isValid(x, y))
+                    sel = new Selection(game.getGrid(), x, y);
                 repaint();
             }
 

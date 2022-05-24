@@ -69,6 +69,10 @@ public class LetterGrid {
         return dim;
     }
 
+    public boolean isValid(int x, int y) {
+        return x >= 0 && y >= 0 && x < size() && y < size();
+    }
+
     // tester
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
