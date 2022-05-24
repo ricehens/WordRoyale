@@ -115,9 +115,11 @@ public class HostMenu extends JFrame {
                 int gridNo = ((Number) gridSize.getValue()).intValue();
                 int timeNo = ((Number) timeLimit.getValue()).intValue();
                 int portNo = ((Number) port.getValue()).intValue();
-                if (gridNo > 0 && timeNo > 0 && portNo >= 0) {
-                    new HostWait(new Server(dict, gridNo, gridNo, timeNo, portNo),
-                            new Client(dict, portNo, "localhost", portNo));
+                int totalNo = ((Number) total.getValue()).intValue();
+                int teamNo = ((Number) team.getValue()).intValue();
+                if (gridNo > 0 && timeNo > 0 && portNo >= 0 && totalNo > 0 && teamNo >= 0) {
+                    new HostWait(new Server(dict, gridNo, timeNo, totalNo, portNo),
+                            new Client(dict, teamNo, "localhost", portNo));
                     bye();
                 }
             }
