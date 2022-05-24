@@ -88,9 +88,12 @@ public class JoinMenu extends JFrame {
         singlePlayer.setPreferredSize(new Dimension(100, 100));
         singlePlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new JoinWait(new Client(dict, ((Number) team.getValue()).intValue(),
-                        host.getText(), ((Number) port.getValue()).intValue()));
-                bye();
+                int teamNo = ((Number) team.getValue()).intValue();
+                int portNo = ((Number) port.getValue()).intValue();
+                if (teamNo >= 0 && portNo >= 0) {
+                    new JoinWait(new Client(dict, teamNo,  host.getText(), portNo));
+                    bye();
+                }
             }
         });
         buttons.add(singlePlayer);

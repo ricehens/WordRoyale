@@ -102,6 +102,8 @@ public class MainMenu extends JFrame {
     }
 
     public static void main(String[] args) {
+        System.out.close();
         new MainMenu(new Dictionary());
     }
+
 }

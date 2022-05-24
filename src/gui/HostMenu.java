@@ -112,13 +112,14 @@ public class HostMenu extends JFrame {
         singlePlayer.setPreferredSize(new Dimension(100, 100));
         singlePlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new HostWait(new Server(dict, ((Number) gridSize.getValue()).intValue(),
-                        ((Number) timeLimit.getValue()).intValue(),
-                        ((Number) total.getValue()).intValue(),
-                        ((Number) port.getValue()).intValue()),
-                        new Client(dict, ((Number) team.getValue()).intValue(),
-                                "localhost", ((Number) port.getValue()).intValue()));
-                bye();
+                int gridNo = ((Number) gridSize.getValue()).intValue();
+                int timeNo = ((Number) timeLimit.getValue()).intValue();
+                int portNo = ((Number) port.getValue()).intValue();
+                if (gridNo > 0 && timeNo > 0 && portNo >= 0) {
+                    new HostWait(new Server(dict, gridNo, gridNo, timeNo, portNo),
+                            new Client(dict, portNo, "localhost", portNo));
+                    bye();
+                }
             }
         });
         buttons.add(singlePlayer);
