@@ -20,6 +20,7 @@ public class HostWait extends JFrame {
         this.server = server;
         this.client = client;
 
+
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         addFields();
@@ -44,6 +45,8 @@ public class HostWait extends JFrame {
         singlePlayer.setPreferredSize(new Dimension(100, 100));
         singlePlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                server.begin();
+                new MultiplayerFrame(client);
                 bye();
             }
         });

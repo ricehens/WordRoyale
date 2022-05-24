@@ -15,6 +15,7 @@ public class JoinWait extends JFrame {
     public JoinWait(Client client) {
         super("Word Royale: Join Game");
         this.client = client;
+        client.link(this);
 
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -35,5 +36,10 @@ public class JoinWait extends JFrame {
     private void bye() {
         setVisible(false);
         dispose();
+    }
+
+    public void proceed() {
+        new MultiplayerFrame(client);
+        bye();
     }
 }

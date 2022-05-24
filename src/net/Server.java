@@ -35,7 +35,7 @@ public class Server {
 
     public void init() {
         try {
-            serverSocket = new ServerSocket(this.port = port);
+            serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);

@@ -2,10 +2,7 @@ package net;
 
 import backend.Controller;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,59 +11,56 @@ import java.util.List;
 public class EchoChamber extends Thread {
 
     private Controller game;
-    private static List<Socket> list = new ArrayList<>();
+    // private static List<Socket> list = new ArrayList<>();
+    private static List<DataOutputStream> outs = new ArrayList<>();
+    private DataInputStream in;
     private Socket socket;
 
     public EchoChamber(Controller game, Socket socket) {
         this.game = game;
-        list.add(this.socket = socket);
+        // list.add(this.socket = socket);
+        this.socket = socket;
+        try {
+            outs.add(new DataOutputStream(socket.getOutputStream()));
+            in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override public void run() {
-        DataOutputStream out = null;
-        try (DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()))) {
-            String line;
+        try {
+            String line = null;
             do {
-                line = in.readUTF().trim();
-                System.out.println("[Received] " + line);
-                for (Socket dest : list) {
-                    if (dest == socket) continue;
-                    out = new DataOutputStream(dest.getOutputStream());
-                    out.writeUTF(line);
-                }
-            } while (!line.equals("EOF"));
+                //if (in.available() > 0) {
+                    line = in.readUTF().trim();
+                    System.out.println("[Received] " + line);
+                    broadcast(line, socket);
+                //}
+            } while (line == null || !line.equals("done"));
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (out != null)
-                    out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     public static void broadcast(String msg) {
-        DataOutputStream out = null;
         try {
-            broadcast(msg, null, out);
+            broadcast(msg, null);
         } catch (IOException e) {
            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null)
-                    out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
-    public static void broadcast(String msg, Socket avoid, DataOutputStream out) throws IOException {
+    public static void broadcast(String msg, Socket avoid) throws IOException {
+        System.out.println("broadcasting to " + outs.size());
+        /*
         for (Socket dest : list) {
             if (dest == avoid) continue;
-            out = new DataOutputStream(dest.getOutputStream());
+            DataOutputStream out = new DataOutputStream(dest.getOutputStream());
+            out.writeUTF(msg);
+        }
+         */
+        for (DataOutputStream out : outs) {
             out.writeUTF(msg);
         }
     }

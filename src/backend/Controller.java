@@ -1,5 +1,7 @@
 package backend;
 
+import net.Client;
+
 import java.awt.*;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,6 +20,8 @@ public class Controller {
     protected int time;
     protected long start;
     protected int team;
+
+    protected Client client;
 
     public Controller(Dictionary dict, int gridSize, int time, int team, int numTeams) {
         this(dict, new LetterGrid(gridSize), time, team, numTeams);
@@ -40,28 +44,39 @@ public class Controller {
         this.start = start;
     }
 
+    // terrible design
+    public void linkClient(Client client) {
+        this.client = client;
+    }
+
     /**
      * Records the selected word
      * @param sel current selection
      * @return true if word is valid and new
      */
     public boolean record(Selection sel) {
-        return receive(sel, team, System.currentTimeMillis() - start);
-    }
-
-    public boolean receive(Selection sel, int player, long time) {
         if (timeLeft() <= 0) return false;
         String word = sel.word();
-        if (dict.isWord(word)) {
-            if (words.containsKey(word) && words.get(word).getTime() <= time)
-                return false;
-            words.put(word, new WordEvent(player, word, time));
-            cnt[player]++;
-            score[player] += score(word.length());
-            // TODO adjust scores down if needed
-            return true;
-        }
+        if (dict.isWord(word))
+            return receive(word, team, System.currentTimeMillis() - start);
         return false;
+    }
+
+    public boolean receive(String word, int player, long time) {
+        WordEvent we = words.get(word);
+        if (we != null && we.getTime() <= time)
+            return false;
+        WordEvent we2 = new WordEvent(player, word, time);
+        words.put(word, we2);
+        if (we != null) {
+            cnt[we.getPlayer()]--;
+            score[we.getPlayer()] -= score(word.length());
+        }
+        cnt[player]++;
+        score[player] += score(word.length());
+        if (client != null && player == team)
+            client.broadcast(we2);
+        return true;
     }
 
     public Color color(Selection sel) {

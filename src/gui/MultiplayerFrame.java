@@ -2,24 +2,23 @@ package gui;
 
 import backend.Controller;
 import backend.Dictionary;
+import net.Client;
 
 import javax.swing.*;
 
 public class MultiplayerFrame extends JFrame {
+    Client client;
     Controller game;
     GridPanel panel;
     ScoreboardPanel score;
 
-    public MultiplayerFrame(Dictionary dict) {
-        this(dict, 4, 60);
-    }
-
-    public MultiplayerFrame(Dictionary dict, int gridSize, int time) {
+    public MultiplayerFrame(Client client) {
         super("Word Royale: Multiplayer");
         JPanel main = new JPanel();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
-        game = new Controller(dict, gridSize, time, 0, 1);
+        this.client = client;
+        game = client.getGame();
         score = new ScoreboardPanel(game);
         panel = new GridPanel(game);
         panel.initScoreboard(score);
@@ -33,8 +32,4 @@ public class MultiplayerFrame extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        Dictionary dict = new Dictionary();
-        new MultiplayerFrame(dict, 8, 120);
-    }
 }
