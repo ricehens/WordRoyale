@@ -12,7 +12,7 @@ public class Dictionary {
     public Dictionary() {
         words = new TreeSet<>();
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("dict.txt")))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("scrabble.txt")))) {
             String line;
             while ((line = br.readLine()) != null)
                 if (line.length() >= 3)
