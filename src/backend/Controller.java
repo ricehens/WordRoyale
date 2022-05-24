@@ -2,9 +2,7 @@ package backend;
 
 import java.awt.*;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 // TODO connect to network
 public class Controller {
@@ -19,21 +17,21 @@ public class Controller {
 
     protected int time;
     protected long start;
-    protected int player;
+    protected int team;
 
-    public Controller(Dictionary dict, int gridSize, int time) {
-        this(dict, new LetterGrid(gridSize), time);
+    public Controller(Dictionary dict, int gridSize, int time, int team, int numTeams) {
+        this(dict, new LetterGrid(gridSize), time, team, numTeams);
     }
 
-    public Controller(Dictionary dict, LetterGrid grid, int time) {
-        this(dict, grid, time, 0, 1, System.currentTimeMillis());
+    public Controller(Dictionary dict, LetterGrid grid, int time, int team, int numTeams) {
+        this(dict, grid, time, team, numTeams, System.currentTimeMillis());
     }
 
-    public Controller(Dictionary dict, LetterGrid grid, int time, int player, int numTeams, long start) {
+    public Controller(Dictionary dict, LetterGrid grid, int time, int team, int numTeams, long start) {
         this.dict = dict;
         this.grid = grid;
         this.time = time;
-        this.player = player;
+        this.team = team;
 
         cnt = new int[numTeams];
         score = new int[numTeams];
@@ -48,7 +46,7 @@ public class Controller {
      * @return true if word is valid and new
      */
     public boolean record(Selection sel) {
-        return receive(sel, player, System.currentTimeMillis() - start);
+        return receive(sel, team, System.currentTimeMillis() - start);
     }
 
     public boolean receive(Selection sel, int player, long time) {
@@ -60,6 +58,7 @@ public class Controller {
             words.put(word, new WordEvent(player, word, time));
             cnt[player]++;
             score[player] += score(word.length());
+            // TODO adjust scores down if needed
             return true;
         }
         return false;
@@ -80,19 +79,27 @@ public class Controller {
     }
 
     public int getCnt() {
-        return getCnt(player);
+        return getCnt(team);
     }
 
-    public int getCnt(int player) {
-        return cnt[player];
+    public int getCnt(int team) {
+        return cnt[team];
     }
 
     public int getScore() {
-        return getScore(player);
+        return getScore(team);
     }
 
-    public int getScore(int player) {
-        return score[player];
+    public int getScore(int team) {
+        return score[team];
+    }
+
+    public int getTeam() {
+        return team;
+    }
+
+    public WordEvent getEvent(String word) {
+        return words.get(word);
     }
 
     public double timeLeft() {

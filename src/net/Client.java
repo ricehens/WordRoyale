@@ -1,28 +1,30 @@
 package net;
 
-import backend.Controller;
+import backend.*;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
-import java.util.Queue;
 
-public class Client extends Thread {
+public class Client {
 
     private Controller game;
+    private Dictionary dict;
+    private int team;
 
     private String serverAddress;
     private int port;
-    private Queue<String> mailbox;
 
-    public Client(Controller game, String serverAddress, int port) {
-        this.game = game;
+    public Client(Dictionary dict, int team, String serverAddress, int port) {
+        this.dict = dict;
+        this.team = team;
         this.serverAddress = serverAddress;
         this.port = port;
-        mailbox = new LinkedList<>();
+
+        init();
     }
 
-    @Override public void run() {
+    public void init() {
         try (Socket server = new Socket(serverAddress, port);
              DataInputStream in = new DataInputStream(new BufferedInputStream(server.getInputStream()));
              DataOutputStream out = new DataOutputStream(server.getOutputStream()))
@@ -33,7 +35,7 @@ public class Client extends Thread {
                     do {
                         try {
                             line = in.readUTF();
-                            System.out.println(line);
+                            parse(line);
                         } catch (IOException e) {
                             e.printStackTrace();
                             break;
@@ -41,13 +43,34 @@ public class Client extends Thread {
                     } while (!line.equals("EOF"));
                 }
             }.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1); // TODO back to main menu
+        }
+    }
 
-            for (String msg : mailbox)
-                out.writeUTF(msg);
-            // out.writeUTF("EOF");
+    public void broadcast(WordEvent we) {
+        try (Socket server = new Socket(serverAddress, port);
+             DataInputStream in = new DataInputStream(new BufferedInputStream(server.getInputStream()));
+             DataOutputStream out = new DataOutputStream(server.getOutputStream()))
+        {
+            out.writeUTF(String.format("%d %s %d%n", we.getPlayer(), we.getWord(), we.getTime()));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private void parse(String msg) {
+        if (msg.startsWith("READY")) {
+            String[] split = msg.trim().split(" ");
+            int dim = Integer.parseInt(split[1]);
+            int time = Integer.parseInt(split[2]);
+            int numTeams = Integer.parseInt(split[3]);
+            game = new Controller(dict, new LetterGrid(dim, split[4]), time, team % numTeams, numTeams);
+        }
+    }
+
+    public Controller getGame() {
+        return game;
+    }
 }

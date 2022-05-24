@@ -1,6 +1,7 @@
 package gui;
 
 import backend.Dictionary;
+import net.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +37,8 @@ public class JoinMenu extends JFrame {
     private void addFields() {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        JPanel fields2 = new JPanel();
+        /*
         JPanel fields1 = new JPanel();
 
         JPanel nameField = new JPanel();
@@ -46,17 +49,18 @@ public class JoinMenu extends JFrame {
         nameField.add(name);
         fields1.add(nameField);
 
+         */
+
         JPanel teamField = new JPanel();
         teamField.add(new JLabel("Team number:"));
         team = new JFormattedTextField(NumberFormat.getNumberInstance());
         team.setValue(0);
         team.setColumns(4);
         teamField.add(team);
-        fields1.add(teamField);
+        fields2.add(teamField);
 
-        panel.add(fields1);
+        //panel.add(fields1);
 
-        JPanel fields2 = new JPanel();
 
         JPanel hostField = new JPanel();
         hostField.add(new JLabel("Host address:"));
@@ -84,6 +88,8 @@ public class JoinMenu extends JFrame {
         singlePlayer.setPreferredSize(new Dimension(100, 100));
         singlePlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                new JoinWait(new Client(dict, ((Number) team.getValue()).intValue(),
+                        host.getText(), ((Number) port.getValue()).intValue()));
                 bye();
             }
         });

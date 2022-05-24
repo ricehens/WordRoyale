@@ -19,7 +19,7 @@ public class SinglePlayerFrame extends JFrame {
         JPanel main = new JPanel();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
-        game = new Controller(dict, gridSize, time);
+        game = new Controller(dict, gridSize, time, 0, 1);
         score = new ScoreboardPanel(game);
         panel = new GridPanel(game);
         panel.initScoreboard(score);

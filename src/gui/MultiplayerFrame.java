@@ -15,11 +15,11 @@ public class MultiplayerFrame extends JFrame {
     }
 
     public MultiplayerFrame(Dictionary dict, int gridSize, int time) {
-        super("Word Royale: Single Player");
+        super("Word Royale: Multiplayer");
         JPanel main = new JPanel();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
-        game = new Controller(dict, gridSize, time);
+        game = new Controller(dict, gridSize, time, 0, 1);
         score = new ScoreboardPanel(game);
         panel = new GridPanel(game);
         panel.initScoreboard(score);

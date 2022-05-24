@@ -37,6 +37,15 @@ public class LetterGrid {
         } while (!acceptable());
     }
 
+    public LetterGrid(int dim, String blob) {
+        this.dim = dim;
+        board = new char[dim][dim];
+
+        for (int i = 0; i < dim; i++)
+            for (int j = 0; j < dim; j++)
+                board[i][j] = blob.charAt(dim * i + j);
+    }
+
     // generates a random grid
     private void generate() {
         for (int i = 0; i < dim; i++)

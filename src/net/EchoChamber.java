@@ -29,9 +29,6 @@ public class EchoChamber extends Thread {
             do {
                 line = in.readUTF().trim();
                 System.out.println("[Received] " + line);
-                if (line.equals("REQUEST")) {
-                    out = new DataOutputStream(socket.getOutputStream());
-                }
                 for (Socket dest : list) {
                     if (dest == socket) continue;
                     out = new DataOutputStream(dest.getOutputStream());
@@ -42,10 +39,35 @@ public class EchoChamber extends Thread {
             e.printStackTrace();
         } finally {
             try {
-                out.close();
+                if (out != null)
+                    out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void broadcast(String msg) {
+        DataOutputStream out = null;
+        try {
+            broadcast(msg, null, out);
+        } catch (IOException e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void broadcast(String msg, Socket avoid, DataOutputStream out) throws IOException {
+        for (Socket dest : list) {
+            if (dest == avoid) continue;
+            out = new DataOutputStream(dest.getOutputStream());
+            out.writeUTF(msg);
         }
     }
 

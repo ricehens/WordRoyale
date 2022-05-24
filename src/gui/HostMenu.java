@@ -1,6 +1,8 @@
 package gui;
 
 import backend.Dictionary;
+import net.Client;
+import net.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,9 +18,11 @@ public class HostMenu extends JFrame {
     private JFormattedTextField team;
     private JFormattedTextField total;
     private JFormattedTextField port;
+    private JFormattedTextField timeLimit;
+    private JFormattedTextField gridSize;
 
     public HostMenu(Dictionary dict) {
-        super("Word Royale: Join Multiplayer");
+        super("Word Royale: Host Game");
         this.dict = dict;
 
         panel = new JPanel();
@@ -36,8 +40,10 @@ public class HostMenu extends JFrame {
     private void addFields() {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JPanel fields1 = new JPanel();
+        //JPanel fields1 = new JPanel();
 
+        JPanel fields2 = new JPanel();
+        /*
         JPanel nameField = new JPanel();
         nameField.add(new JLabel("Display name:"));
         name = new TextField();
@@ -45,6 +51,7 @@ public class HostMenu extends JFrame {
         name.setColumns(15);
         nameField.add(name);
         fields1.add(nameField);
+         */
 
         JPanel portField = new JPanel();
         portField.add(new JLabel("Port:"));
@@ -52,11 +59,10 @@ public class HostMenu extends JFrame {
         port.setValue(6969);
         port.setColumns(4);
         portField.add(port);
-        fields1.add(portField);
+        fields2.add(portField);
 
-        panel.add(fields1);
+        //panel.add(fields1);
 
-        JPanel fields2 = new JPanel();
 
         JPanel totalField = new JPanel();
         totalField.add(new JLabel("Total teams:"));
@@ -76,15 +82,42 @@ public class HostMenu extends JFrame {
 
 
         panel.add(fields2);
+
+        JPanel fields = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JPanel timeField = new JPanel();
+        timeField.add(new JLabel("Time limit:"));
+        timeLimit = new JFormattedTextField(NumberFormat.getNumberInstance());
+        timeLimit.setValue(60);
+        timeLimit.setColumns(4);
+        timeField.add(timeLimit);
+        fields.add(timeField);
+
+        JPanel sizeField = new JPanel();
+        sizeField.add(new JLabel("Grid size:"));
+        gridSize = new JFormattedTextField(NumberFormat.getNumberInstance());
+        gridSize.setValue(4);
+        gridSize.setColumns(4);
+        sizeField.add(gridSize);
+        fields.add(sizeField);
+
+        panel.add(fields);
     }
 
     private void addButtons() {
         JPanel buttons = new JPanel();
 
-        JButton singlePlayer = new JButton("Join");
+        JButton singlePlayer = new JButton("Host");
         singlePlayer.setPreferredSize(new Dimension(100, 100));
         singlePlayer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                new HostWait(new Server(dict, ((Number) gridSize.getValue()).intValue(),
+                        ((Number) timeLimit.getValue()).intValue(),
+                        ((Number) total.getValue()).intValue(),
+                        ((Number) port.getValue()).intValue()),
+                        new Client(dict, ((Number) team.getValue()).intValue(),
+                                "localhost", ((Number) port.getValue()).intValue()));
                 bye();
             }
         });
