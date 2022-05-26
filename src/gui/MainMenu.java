@@ -103,6 +103,7 @@ public class MainMenu extends JFrame {
 
     public static void main(String[] args) {
         System.out.close();
+        System.err.close();
         new MainMenu(new Dictionary());
     }
 
