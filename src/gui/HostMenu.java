@@ -10,6 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 
+/**
+ * Represents the menu for the host of a multiplayer game.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class HostMenu extends JFrame {
     private Dictionary dict;
     private JPanel panel;
@@ -21,6 +29,10 @@ public class HostMenu extends JFrame {
     private JFormattedTextField timeLimit;
     private JFormattedTextField gridSize;
 
+    /**
+     * Constructs a host menu.
+     * @param dict the dictionary of words to use for the game
+     */
     public HostMenu(Dictionary dict) {
         super("Word Royale: Host Game");
         this.dict = dict;
@@ -37,6 +49,9 @@ public class HostMenu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Adds JPanel fields to the menu.
+     */
     private void addFields() {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -105,6 +120,9 @@ public class HostMenu extends JFrame {
         panel.add(fields);
     }
 
+    /**
+     * Adds JPanel buttons onto the menu.
+     */
     private void addButtons() {
         JPanel buttons = new JPanel();
 
@@ -129,6 +147,9 @@ public class HostMenu extends JFrame {
         panel.add(buttons);
     }
 
+    /**
+     * Quits the host menu window.
+     */
     private void bye() {
         setVisible(false);
         dispose();
