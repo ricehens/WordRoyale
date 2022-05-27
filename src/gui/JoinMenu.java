@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 
+/**
+ * The class for the multiplayer game joiner menu display.
+ */
 public class JoinMenu extends JFrame {
     private Dictionary dict;
     private JPanel panel;
@@ -18,6 +21,10 @@ public class JoinMenu extends JFrame {
     private TextField host;
     private JFormattedTextField port;
 
+    /**
+     * Constructs a join menu with a certain dictionary of words.
+     * @param dict the dictionary of words for the game
+     */
     public JoinMenu(Dictionary dict) {
         super("Word Royale: Join Multiplayer");
         this.dict = dict;
@@ -34,6 +41,9 @@ public class JoinMenu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Adds GUI fields to the display.
+     */
     private void addFields() {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -81,6 +91,9 @@ public class JoinMenu extends JFrame {
         panel.add(fields2);
     }
 
+    /**
+     * Adds GUI buttons to the display.
+     */
     private void addButtons() {
         JPanel buttons = new JPanel();
 
@@ -101,6 +114,9 @@ public class JoinMenu extends JFrame {
         panel.add(buttons);
     }
 
+    /**
+     * Quits the join menu window.
+     */
     private void bye() {
         setVisible(false);
         dispose();
