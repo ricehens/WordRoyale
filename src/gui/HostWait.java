@@ -13,12 +13,25 @@ import java.net.*;
 import java.text.NumberFormat;
 import java.util.Enumeration;
 
+/**
+ * A class for the host waiting display.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class HostWait extends JFrame {
     private Server server;
     private Client client;
     private JPanel panel;
     private boolean running = true;
 
+    /**
+     * Constructs a host wait display.
+     * @param server the connected server
+     * @param client the server client
+     */
     public HostWait(Server server, Client client) {
         super("Word Royale: Host Game");
         this.server = server;
@@ -36,6 +49,9 @@ public class HostWait extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Adds GUI fields to the display.
+     */
     private void addFields() {
         // panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         try {
@@ -60,6 +76,11 @@ public class HostWait extends JFrame {
         }.start();
     }
 
+    /**
+     * Gets the IP Address of the game host.
+     * @return the IP Address
+     * @throws IOException
+     */
     private String ipAddress() throws IOException {
         Socket s = new Socket();
         s.connect(new InetSocketAddress("google.com", 80));
@@ -67,6 +88,9 @@ public class HostWait extends JFrame {
 
     }
 
+    /**
+     * Adds GUI buttons to the display.
+     */
     private void addButtons() {
         JPanel buttons = new JPanel();
 
@@ -84,6 +108,9 @@ public class HostWait extends JFrame {
         panel.add(buttons);
     }
 
+    /**
+     * Quits the host wait window.
+     */
     private void bye() {
         setVisible(false);
         dispose();
