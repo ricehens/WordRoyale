@@ -1,5 +1,13 @@
 package backend;
 
+/**
+ * Represents a grid of letters, with a certain size.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class LetterGrid {
 
     // char distribution
@@ -37,6 +45,11 @@ public class LetterGrid {
         } while (!acceptable());
     }
 
+    /**
+     * Generates a letter grid with specified values
+     * @param dim the size of the board
+     * @param blob the String of values that go in the grid
+     */
     public LetterGrid(int dim, String blob) {
         this.dim = dim;
         board = new char[dim][dim];
@@ -46,22 +59,34 @@ public class LetterGrid {
                 board[i][j] = blob.charAt(dim * i + j);
     }
 
-    // generates a random grid
+    /**
+     * Generates a random grid
+     */
     private void generate() {
         for (int i = 0; i < dim; i++)
             for (int j = 0; j < dim; j++)
                 board[i][j] = genChar();
     }
 
+    /**
+     * Generates a random character to go on a spot on the grid
+     * @return a random character from the character distribution array
+     */
     private char genChar() {
         return dist[(int) (dist.length * Math.random())];
     }
 
-    // checks if the current grid is acceptable
+    /**
+     * Checks if the current grid is acceptable
+     * @return true if acceptable, false if not
+     */
     private boolean acceptable() {
         return true;
     }
 
+    /**
+     * Prints the letter grid
+     */
     private void print() {
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim - 1; j++)
@@ -70,19 +95,38 @@ public class LetterGrid {
         }
     }
 
+    /**
+     * Gets a letter from a specified position on the letter grid
+     * @param x row number
+     * @param y column number
+     * @return the letter at the specified position
+     */
     public char get(int x, int y) {
         return board[x][y];
     }
 
+    /**
+     * Returns the size of the letter grid
+     * @return size of the letter grid
+     */
     public int size() {
         return dim;
     }
 
+    /**
+     * Checks whether a position on the grid is within the bounds
+     * @param x row number
+     * @param y column number
+     * @return true if the position is within the grid bounds, false if not
+     */
     public boolean isValid(int x, int y) {
         return x >= 0 && y >= 0 && x < size() && y < size();
     }
 
-    // tester
+    /**
+     * Main method for testing the LetterGrid class
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
             LetterGrid lg = new LetterGrid(4);
