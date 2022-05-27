@@ -10,6 +10,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 
+/**
+ * A class for the main menu display of the game.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class MainMenu extends JFrame {
     private Dictionary dict;
     private JPanel panel;
@@ -19,6 +27,10 @@ public class MainMenu extends JFrame {
     private JFormattedTextField gridSize;
     */
 
+    /**
+     * Constructs a main menu with a specified dictionary to use.
+     * @param dict the dictionary of words for the game
+     */
     public MainMenu(Dictionary dict) {
         super("Word Royale");
         this.dict = dict;
@@ -60,6 +72,9 @@ public class MainMenu extends JFrame {
     }
     */
 
+    /**
+     * Adds GUI buttons to the display.
+     */
     private void addButtons() {
         JPanel buttons = new JPanel();
 
@@ -96,11 +111,18 @@ public class MainMenu extends JFrame {
         panel.add(buttons);
     }
 
+    /**
+     * Quits the main menu window.
+     */
     private void bye() {
         setVisible(false);
         dispose();
     }
 
+    /**
+     * Main method to create the main menu.
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         System.out.close();
         System.err.close();
