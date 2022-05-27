@@ -7,6 +7,14 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Manages the whole backend portion of the game.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class Controller {
 
     private Dictionary dict;
@@ -28,14 +36,39 @@ public class Controller {
 
     private List<JPanel> updates;
 
+    /**
+     * Constructs a Controller with a specified grid size.
+     * @param dict dictionary of words
+     * @param gridSize grid size
+     * @param time time on the clock
+     * @param team team number
+     * @param numTeams number of teams
+     */
     public Controller(Dictionary dict, int gridSize, int time, int team, int numTeams) {
         this(dict, new LetterGrid(gridSize), time, team, numTeams);
     }
 
+    /**
+     * Constructs a Controller with a specified letter grid.
+     * @param dict dictionary of words
+     * @param grid letter grid
+     * @param time time on the clock
+     * @param team team number
+     * @param numTeams number of teams
+     */
     public Controller(Dictionary dict, LetterGrid grid, int time, int team, int numTeams) {
         this(dict, grid, time, team, numTeams, System.currentTimeMillis());
     }
 
+    /**
+     * Constructs a Controller with a specified letter grid and ?????.
+     * @param dict dictionary of words
+     * @param grid letter grid
+     * @param time time on the clock
+     * @param team team number
+     * @param numTeams number of teams
+     * @param start ?????
+     */
     public Controller(Dictionary dict, LetterGrid grid, int time, int team, int numTeams, long start) {
         this.dict = dict;
         this.grid = grid;
@@ -56,11 +89,18 @@ public class Controller {
         this.start = start;
     }
 
-    // terrible design
+    /**
+     * Links the client to a specified client.
+     * @param client client to link
+     */
     public void linkClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * Links to a specified panel.
+     * @param panel panel to link
+     */
     public void linkPanel(JPanel panel) {
         updates.add(panel);
     }
@@ -111,38 +151,77 @@ public class Controller {
         return Color.GRAY;
     }
 
+    /**
+     * Returns the letter grid.
+     * @return the letter grid
+     */
     public LetterGrid getGrid() {
         return grid;
     }
 
+    /**
+     * Returns a individual count.
+     * @return the individual count
+     */
     public int getCnt() {
         return indivCnt;
     }
 
+    /**
+     * Returns the count of a team.
+     * @param team team of players
+     * @return the count of the specified team
+     */
     public int getCnt(int team) {
         return cnt[team];
     }
 
+    /**
+     * Returns an individual score.
+     * @return the individual score.
+     */
     public int getScore() {
         return indivScore;
     }
 
+    /**
+     * Returns the score of a team.
+     * @param team team of players
+     * @return the team's score
+     */
     public int getScore(int team) {
         return score[team];
     }
 
+    /**
+     * Returns the team.
+     * @return the team
+     */
     public int getTeam() {
         return team;
     }
 
+    /**
+     * Returns the number of teams playing.
+     * @return the number of teams playing
+     */
     public int getNumTeams() {
         return numTeams;
     }
 
+    /**
+     * Returns a WordEvent for one guess of a word.
+     * @param word word
+     * @return
+     */
     public WordEvent getEvent(String word) {
         return words.get(word);
     }
 
+    /**
+     * Returns the time left in the game.
+     * @return the time left in the game
+     */
     public double timeLeft() {
         return Math.max(0.0, time - .001 * (System.currentTimeMillis() - start));
     }
@@ -151,6 +230,11 @@ public class Controller {
         return queue;
     }
 
+    /**
+     * Returns the score for a certain word length.
+     * @param wordLen length of the word
+     * @return the score associated with that word
+     */
     private int score(int wordLen) {
         if (wordLen <= 2) return 0; // this should never happen
         if (wordLen == 3) return 100;
