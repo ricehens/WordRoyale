@@ -2,6 +2,14 @@ package backend;
 
 import java.util.Stack;
 
+/**
+ * Represents a selection of letters during the swiping process.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class Selection {
 
     private LetterGrid grid;
@@ -52,18 +60,38 @@ public class Selection {
         return true;
     }
 
+    /**
+     * Checks whether a square on the grid is marked.
+     * @param x row number
+     * @param y column number
+     * @return true if the the square is marked, false if not
+     */
     public boolean marked(int x, int y) {
         return grid.isValid(x, y) && marked[x][y];
     }
 
+    /**
+     * Returns the word that the selection represents.
+     * @return the String word
+     */
     public String word() {
         return sb.toString();
     }
 
+    /**
+     * Returns the row size of the selection.
+     * @return row size of selection
+     */
     public int getSize() {
         return row.size();
     }
 
+    /**
+     * Returns whether another square is adjacent to a square.
+     * @param x row number of other square
+     * @param y column number of other square
+     * @return true if the square is adjacent, false if not
+     */
     private boolean isAdj(int x, int y) {
         int x0 = row.peek(), y0 = col.peek();
         for (int i = 0; i < 8; i++)
@@ -72,6 +100,12 @@ public class Selection {
         return false;
     }
 
+    /**
+     * Checks whether a backtrace occurs to undo a letter in the selection.
+     * @param x row number
+     * @param y column number
+     * @return true if it is an undo, false if not
+     */
     private boolean isUndo(int x, int y) {
         int x0 = row.pop(), y0 = col.pop();
         boolean ret = getSize() > 0 && x == row.peek() && y == col.peek();
