@@ -12,6 +12,14 @@ import backend.Controller;
 import backend.LetterGrid;
 import backend.Selection;
 
+/**
+ * Represents a letter grid panel for the GUI.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class GridPanel extends JPanel {
 
     private int gridSize;
@@ -19,9 +27,13 @@ public class GridPanel extends JPanel {
     private Controller game;
     private Selection sel;
 
-    private ScoreboardPanel score; // TODO better design
+    private ScoreboardPanel score; // could have better design
     public void initScoreboard(ScoreboardPanel score) { this.score = score; }
     
+    /**
+     * Constructs a grid panel connected to a specified game controller.
+     * @param game the Controller connected to the letter panel
+     */
     public GridPanel(Controller game) {
         this.game = game;
         gridSize = game.getGrid().size();
@@ -31,6 +43,10 @@ public class GridPanel extends JPanel {
         implementMouseListeners();
     }
 
+    /**
+     * Draws the paint component.
+     * @param g the Graphics to use
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g); // clear
 
@@ -44,6 +60,10 @@ public class GridPanel extends JPanel {
         drawLetterGrid(g2D);
     }
 
+    /**
+     * Draws the letter grid specifically.
+     * @param g2D the Graphics2D to use
+     */
     public void drawLetterGrid(Graphics2D g2D) {
         int eps = 10;
         Color alt = game.color(sel);
@@ -59,10 +79,17 @@ public class GridPanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the grid size to a specified size.
+     * @param size the specified size
+     */
     public void setGridSize(int size) {
         gridSize = size;
     }
 
+    /**
+     * Takes in the mouse input.
+     */
     private void implementMouseListeners() {
         addMouseListener(new MouseListener() {
             @Override
