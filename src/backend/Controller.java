@@ -20,7 +20,7 @@ public class Controller {
     private Dictionary dict;
     private LetterGrid grid;
     private Map<String, WordEvent> words;
-    private Stack<String> queue;
+    private Stack<String> stack;
 
     private int numTeams;
     private int[] cnt;
@@ -40,7 +40,7 @@ public class Controller {
      * Constructs a Controller with a specified grid size.
      * @param dict dictionary of words
      * @param gridSize grid size
-     * @param time time on the clock
+     * @param time time limit
      * @param team team number
      * @param numTeams number of teams
      */
@@ -52,7 +52,7 @@ public class Controller {
      * Constructs a Controller with a specified letter grid.
      * @param dict dictionary of words
      * @param grid letter grid
-     * @param time time on the clock
+     * @param time time limit
      * @param team team number
      * @param numTeams number of teams
      */
@@ -64,10 +64,10 @@ public class Controller {
      * Constructs a Controller with a specified letter grid and ?????.
      * @param dict dictionary of words
      * @param grid letter grid
-     * @param time time on the clock
+     * @param time time limit
      * @param team team number
      * @param numTeams number of teams
-     * @param start ?????
+     * @param start start time in milliseconds
      */
     public Controller(Dictionary dict, LetterGrid grid, int time, int team, int numTeams, long start) {
         this.dict = dict;
@@ -84,7 +84,7 @@ public class Controller {
                 ((words.containsKey(x) ? -Long.valueOf(words.get(x).getTime()).intValue() : -1)
                         + (words.containsKey(y) ? Long.valueOf(words.get(y).getTime()).intValue() : -1)));
          */
-        queue = new Stack<>();
+        stack = new Stack<>();
         updates = new ArrayList<>();
         this.start = start;
     }
@@ -136,11 +136,16 @@ public class Controller {
         }
         if (client != null && player == team)
             client.broadcast(we2);
-        queue.push(word);
+        stack.push(word);
         for (JPanel p : updates) p.repaint();
         return true;
     }
 
+    /**
+     * Returns the color assigned to the selection on the GUI.
+     * @param sel the selection on the GUI
+     * @return the color assigned to the selection
+     */
     public Color color(Selection sel) {
         if (timeLeft() <= 0 || sel == null)
             return Color.GRAY;
@@ -226,8 +231,12 @@ public class Controller {
         return Math.max(0.0, time - .001 * (System.currentTimeMillis() - start));
     }
 
+    /**
+     * Returns the stack. 
+     * @return the stack of words
+     */
     public Stack<String> getStack() {
-        return queue;
+        return stack;
     }
 
     /**
