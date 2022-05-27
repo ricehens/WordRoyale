@@ -8,6 +8,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+/**
+ * The scoreboard panel display.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class ScoreboardPanel extends JPanel {
 
     private Controller game;
@@ -16,6 +24,10 @@ public class ScoreboardPanel extends JPanel {
 
     private Thread update;
 
+    /**
+     * Constructs the scoreboard panel.
+     * @param game the game Controller to use
+     */
     public ScoreboardPanel(Controller game) {
         this.game = game;
         this.setPreferredSize(new Dimension(width = 500, height = 120));
@@ -33,6 +45,10 @@ public class ScoreboardPanel extends JPanel {
         update.start();
     }
 
+    /**
+     * Adds the GUI paint component.
+     * @param g the Graphics to use
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g;
@@ -40,6 +56,10 @@ public class ScoreboardPanel extends JPanel {
         updateScore(g2D);
     }
 
+    /**
+     * Updates the score on the GUI.
+     * @param g2D the Graphics2D to use
+     */
     private void updateScore(Graphics2D g2D) {
         g2D.drawRect(10, 10, 480, 100);
         g2D.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));

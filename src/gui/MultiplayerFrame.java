@@ -5,6 +5,14 @@ import net.Client;
 
 import javax.swing.*;
 
+/**
+ * The class for the multiplayer JFrame.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class MultiplayerFrame extends JFrame {
     Client client;
     Controller game;
@@ -12,6 +20,10 @@ public class MultiplayerFrame extends JFrame {
     MultiplayerDataPanel words;
     ScoreboardPanel score;
 
+    /**
+     * Constructs the multiplayer frame.
+     * @param client the server client
+     */
     public MultiplayerFrame(Client client) {
         super("Word Royale: Multiplayer");
         JPanel main = new JPanel();
