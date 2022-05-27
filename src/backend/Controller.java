@@ -118,6 +118,14 @@ public class Controller {
         return false;
     }
 
+    /**
+     * Receives an instruction to record a WordEvent.
+     * @param self whether the word selector is self
+     * @param word word selected
+     * @param player team number
+     * @param time time elapsed in milliseconds
+     * @return
+     */
     public boolean receive(boolean self, String word, int player, long time) {
         WordEvent we = words.get(word);
         if (we != null && we.getTime() <= time)
