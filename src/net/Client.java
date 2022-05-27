@@ -8,6 +8,14 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.LinkedList;
 
+/**
+ * Represents a client when connecting to a multiplayer server.
+ * 
+ * @author Eric Shen
+ * @author Andrew Yuan
+ * @author Luke Zhao
+ * @version 05-23-2022
+ */
 public class Client {
 
     private Controller game;
@@ -23,6 +31,13 @@ public class Client {
 
     private JoinWait potentialJw;
 
+    /**
+     * Constructs a client with a specified team number, server address, and port number
+     * @param dict Dictionary of words
+     * @param team Team number assigned to the client
+     * @param serverAddress Server IP address
+     * @param port Server port number
+     */
     public Client(Dictionary dict, int team, String serverAddress, int port) {
         this.dict = dict;
         this.team = team;
@@ -32,11 +47,17 @@ public class Client {
         init();
     }
 
-    // terrible design
+    /**
+     * Links the client to a GUI panel for waiting players
+     * @param jw Specified GUI panel
+     */
     public void link(JoinWait jw) {
         potentialJw = jw;
     }
 
+    /**
+     * Initializes a connection to the host server
+     */
     public void init() {
         try {
             server = new Socket(serverAddress, port);
@@ -62,6 +83,10 @@ public class Client {
         }
     }
 
+    /**
+     * Broadcasts a message to the server about a word selection event
+     * @param we Word selection event with player, word, and time info
+     */
     public void broadcast(WordEvent we) {
         System.out.println("Broadcasting " + we.getWord());
         try {
@@ -72,6 +97,10 @@ public class Client {
         }
     }
 
+    /**
+     * Parses a message indicating game ready status
+     * @param msg Message received from the server
+     */
     private void parse(String msg) {
         System.out.println("Parsing " + msg);
         String[] split = msg.trim().split(" ");
@@ -88,6 +117,10 @@ public class Client {
         }
     }
 
+    /**
+     * Returns the client's game controller
+     * @return client game
+     */
     public Controller getGame() {
         return game;
     }
